@@ -258,6 +258,8 @@ ORDER BY town, lease_commence_date DESC;
 >
 > Select the average resale price by town and lease commence date only for lease commence dates after year 2010 and sort by town (descending) and lease commence date (descending)
 
+Select town,lease_commence_date, Round(Avg(resale_price),2) as Avg_Resale_Price from resale_flat_prices_2017 where lease_commence_date > 2010 group by town,lease_commence_date  order by town desc,lease_commence_date desc
+
 ### Having
 
 The `HAVING` clause is used to filter groups in a `GROUP BY` clause. It is similar to the `WHERE` clause but it is used with aggregate functions. The `HAVING` clause comes after the `GROUP BY` clause and before the `ORDER BY` clause.
@@ -290,6 +292,9 @@ HAVING AVG(resale_price) > 500000;
 `HAVING` can only be used on columns that appear in the `SELECT` clause or columns that are used in aggregate functions.
 
 > Select the maximum resale price by town only for town with maximum resale price greater than 1,000,000
+
+Select town,max(resale_price) as Max_Resale_Price from resale_flat_prices_2017 group by town
+HAVING MAX(resale_price) > 1000000;
 
 ### Advanced operators and functions
 
@@ -346,6 +351,17 @@ FROM resale_flat_prices_2017;
 ```
 
 > Return the records with a new column `flat_size` with values `Small` if flat type is `1-3 ROOM`, `Medium` if flat type is `4 ROOM` and `Large` if flat type is `5 ROOM`, `EXECUTIVE` or `MULTI-GENERATION`
+
+SELECT 
+    *,
+    CASE 
+        WHEN flat_type IN ('1 ROOM', '2 ROOM', '3 ROOM') THEN 'Small'
+        WHEN flat_type = '4 ROOM' THEN 'Medium'
+        WHEN flat_type IN ('5 ROOM', 'EXECUTIVE', 'MULTI-GENERATION') THEN 'Large'
+        ELSE 'unknown flat'
+    END AS flat_size
+FROM 
+    resale_flat_prices_2017;
 
 #### `CAST`
 

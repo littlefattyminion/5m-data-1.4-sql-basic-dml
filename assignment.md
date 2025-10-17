@@ -13,7 +13,8 @@ Paste the answer as SQL in the answer code section below each question.
 Select the minimum and maximum price per sqm of all the flats.
 
 ``
-Select max(resale_price) as Max_Price, min(resale_price) as Min_Price from resale_flat_prices_2017
+# missed the sqm meter
+Select max(resale_price/floor_area_sqm) as Max_Price, min(resale_price/floor_area_sqm) as Min_Price from resale_flat_prices_2017
 
 ```
 
@@ -22,7 +23,9 @@ Select max(resale_price) as Max_Price, min(resale_price) as Min_Price from resal
 Select the average price per sqm for flats in each town.
 
 ```
-Select town, Round(Avg(resale_price),2) as Avg_Price from resale_flat_prices_2017 group by town
+# missed the sqm meter
+Select town, Round(Avg(resale_price/floor_area_sqm),2) as Avg_Price from resale_flat_prices_2017 group by town
+order by Avg_Price
 
 ```
 
@@ -68,6 +71,12 @@ GROUP BY
     town
 ORDER BY 
     flats_sold DESC;
+
+# Ans#2
+Select town, count(*) as units_sold from resale_flat_prices_2017
+where month in ('2017-01','2017-02','2017-03') group by town order by units_sold desc
+
+
 
 ```
 
